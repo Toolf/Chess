@@ -39,20 +39,28 @@ def bishop_attack(table,position,color):
         if table[position.x+i][position.y+i] == enemy_color:
             result.append(Dot(position.x+i,position.y+i))
             break
+        if table[position.x+i][position.y+i] == color:
+            break
     #right down
     for i in range(1,min(table_len - position.x,position.y+1)):
         if table[position.x+i][position.y-i] == enemy_color:
             result.append(Dot(position.x+i,position.y-i))
+            break
+        if table[position.x+i][position.y-i] == color:
             break
     #left up
     for i in range(1,min(position.x+1,table_len - position.y)):
         if table[position.x-i][position.y+i] == enemy_color:
             result.append(Dot(position.x-i,position.y+i))
             break
+        if table[position.x-i][position.y+i] == color:
+            break
     #left down
     for i in range(1,min(position.x+1,position.y+1)):
         if table[position.x-i][position.y-i] == enemy_color:
             result.append(Dot(position.x-i,position.y-i))
+            break
+        if table[position.x-i][position.y-i] == color:
             break
     return tuple(result)
 

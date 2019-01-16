@@ -19,19 +19,18 @@ def pawn_movement(table,position,color):
     return ()
 
 def pawn_attack(table,position,color):
-    enemy_color = int(not color)
     table_len = len(table)
     line_len = len(table[0])
     if color == Color.BLACK:
         return tuple(position + Dot(1,y)
-                     for y in range(-1,2,2)
+                     for y in (-1,1)
                      if (position+Dot(1,y)).in_border(table_len,line_len)
-                     and table[position.x+1][position.y + y] == enemy_color)
+                     and table[position.x+1][position.y + y] == Color.WHITE)
     if color == Color.WHITE:
         return tuple(position + Dot(-1,y)
-                     for y in range(-1,2,2)
-                     if (position+Dot(-1,y).in_border(table_len,line_len))
-                     and table[position.x+1][position.y + y] == enemy_color)
+                     for y in (-1,1)
+                     if (position+Dot(-1,y)).in_border(table_len,line_len)
+                     and table[position.x-1][position.y + y] == Color.BLACK)
     return ()
 
 

@@ -41,20 +41,28 @@ def rook_attack(table,position,color):
         if table[x][position.y] == enemy_color:
             result.append(Dot(x,position.y))
             break
+        if table[x][position.y] == color:
+            break
     #down
     for x in range(position.x+1,table_len):
         if table[x][position.y] == enemy_color:
             result.append(Dot(x,position.y))
+            break
+        if table[x][position.y] == color:
             break
     #left
     for y in range(position.y-1,-1,-1):
         if table[position.x][y] == enemy_color:
             result.append(Dot(position.x,y))
             break
+        if table[position.x][y] == color:
+            break
     #right
     for y in range(position.y+1,line_len):
         if table[position.x][y] == enemy_color:
             result.append(Dot(position.x,y))
+            break
+        if table[position.x][y] == color:
             break
     return tuple(result)
 

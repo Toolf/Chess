@@ -27,7 +27,6 @@ class TestMoveMethod(unittest.TestCase):
 
         #Black
         color = Color.BLACK
-        self.assertEqual(set(pawn_movement(table, Dot(0, 0),color)),{Dot(1,0)})
         self.assertEqual(pawn_movement(table, Dot(0, 1),color), ())
         self.assertEqual(pawn_movement(table, Dot(0, 2),color), ())
         self.assertEqual(set(pawn_movement(table, Dot(0, 3),color)), {Dot(1,3)})
@@ -35,6 +34,10 @@ class TestMoveMethod(unittest.TestCase):
 
         #WHITE
         color = Color.WHITE
+        self.assertEqual(pawn_movement(table, Dot(6, 1),color), ())
+        self.assertEqual(pawn_movement(table, Dot(6, 2),color), ())
+        self.assertEqual(set(pawn_movement(table, Dot(6, 3),color)), {Dot(5,3)})
+        self.assertEqual(set(pawn_movement(table, Dot(5, 4),color)), {Dot(4, 4),Dot(3, 4)})
 
     def test_king(self):
         table = [
@@ -52,7 +55,6 @@ class TestMoveMethod(unittest.TestCase):
         self.assertEqual(set(king_movement(table, Dot(0, 0),color)), {Dot(0, 1),Dot(1,0),Dot(1,1)})
         self.assertEqual(set(king_movement(table, Dot(1, 2),color)),
                          {Dot(0,1),Dot(0,2),Dot(0,3),Dot(1,1),Dot(1,3),Dot(2,1),Dot(2,2),Dot(2,3)})
-        show(king_movement(table, Dot(2, 4),color))
         self.assertEqual(set(king_movement(table, Dot(2, 4),color)), {Dot(1, 3),Dot(1,4),Dot(2,3),Dot(3,3)})
 
         #White
@@ -130,7 +132,6 @@ class TestMoveMethod(unittest.TestCase):
         ]
         #Black
         color = Color.BLACK
-        show(queen_movement(table,Dot(0,0),color))
         self.assertEqual(set(queen_movement(table, Dot(0, 0),color)),
                          {Dot(1, 0),Dot(2,0),Dot(3,0),Dot(4,0),Dot(5,0),Dot(6,0),
                           Dot(0,1),Dot(0,2),Dot(0,3),Dot(0,4),
@@ -165,6 +166,16 @@ class TestSomeMethods(unittest.TestCase):
         gm.next_step(3,4,2,2)
 
         self.assertEqual(gm.finish(),False)
+        gm = Chess()
+        gm.next_step(6,4,4,4)
+        gm.next_step(1,4,3,4)
+        gm.next_step(7,3,3,7)
+        gm.next_step(0,1,2,2)
+        gm.next_step(7,5,4,2)
+        gm.next_step(0,6,2,5)
+        gm.next_step(3,7,1,5)
+
+        self.assertEqual(gm.finish(),True)
 
 
 if __name__ == '__main__':

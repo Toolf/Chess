@@ -1,5 +1,6 @@
 import pygame
 from Chess import Chess
+import pprint
 
 pygame.init()
 
@@ -65,16 +66,18 @@ while 1:
         elif event.type == pygame.MOUSEBUTTONUP:
             mouse = pygame.mouse.get_pos()
             next_step = [int(mouse[1]//part[1]),int(mouse[0]//part[0])]
-            print(focus_element,next_step)
             gameAPI.next_step(*focus_element,*next_step)
             focus_element = None
             move = False
+            if gameAPI.finish():
+                print("FINISH GAME")
+            pprint.pprint(gameAPI.table)
+
 
     background(gameDisplay)
     chess_render(gameAPI.get_state(),gameDisplay,focus_element)
     pygame.display.update()
 
-    if gameAPI.finish():
-        print("FINISH")
+
 
     clock.tick(30)

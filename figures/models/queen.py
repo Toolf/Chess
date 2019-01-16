@@ -68,20 +68,28 @@ def queen_attack(table,position,color):
         if table[position.x+i][position.y+i] == enemy_color:
             result.append(Dot(position.x+i,position.y+i))
             break
+        if table[position.x+i][position.y+i] == color:
+            break
     #right down
     for i in range(1,min(table_len - position.x,position.y+1)):
         if table[position.x+i][position.y-i] == enemy_color:
             result.append(Dot(position.x+i,position.y-i))
+            break
+        if table[position.x+i][position.y-i] == color:
             break
     #left up
     for i in range(1,min(position.x+1,table_len - position.y)):
         if table[position.x-i][position.y+i] == enemy_color:
             result.append(Dot(position.x-i,position.y+i))
             break
+        if table[position.x-i][position.y+i] == color:
+            break
     #left down
     for i in range(1,min(position.x+1,position.y+1)):
         if table[position.x-i][position.y-i] == enemy_color:
             result.append(Dot(position.x-i,position.y-i))
+            break
+        if table[position.x-i][position.y-i] == color:
             break
 
     #like Rook
@@ -90,20 +98,28 @@ def queen_attack(table,position,color):
         if table[x][position.y] == enemy_color:
             result.append(Dot(x,position.y))
             break
+        if table[x][position.y] == color:
+            break
     #down
     for x in range(position.x+1,table_len):
         if table[x][position.y] == enemy_color:
             result.append(Dot(x,position.y))
+            break
+        if table[x][position.y] == color:
             break
     #left
     for y in range(position.y-1,-1,-1):
         if table[position.x][y] == enemy_color:
             result.append(Dot(position.x,y))
             break
+        if table[position.x][y] == color:
+            break
     #right
     for y in range(position.y+1,line_len):
         if table[position.x][y] == enemy_color:
             result.append(Dot(position.x,y))
+            break
+        if table[position.x][y] == color:
             break
     return result
 

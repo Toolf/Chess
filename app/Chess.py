@@ -128,7 +128,7 @@ class Chess:
 
         return state
 
-    def step_to_the_king(self,x,y,table=None,enemy_team=None)->bool:
+    def step_to_the_king(self,x:int,y:int,table=None,enemy_team=None)->bool:
         if table == None:
             table = self.table
         if enemy_team == None:
@@ -142,9 +142,9 @@ class Chess:
 
     def finish(self) -> bool:
         table = copy.deepcopy(self.table)#just in case
-        enemy_color = Color.WHITE if self.step == Color.BLACK else Color.BLACK
+        enemy_color: int = int(Color.WHITE if self.step == Color.BLACK else Color.BLACK)
         team = self.black_team if self.step == Color.BLACK else self.white_team
-        enemy_team = self.white_team if self.step == Color.BLACK else self.white_team
+        enemy_team = self.white_team if self.step == Color.BLACK else self.black_team
         king = [el for el in team if el[2] == "king"][0]
         if self.step_to_the_king(king[0],king[1],table):
             for el in team:
@@ -156,26 +156,32 @@ class Chess:
                     if table[position.x][position.y] == enemy_color:
                         for i in range(len(enemy_team)):
                             if enemy_team[i][0] == position.x and enemy_team[i][1] == position.y:
-                                tmp = copy.copy(enemy_team[i])
+                                tmp = enemy_team[i]
                                 del enemy_team[i]
                                 break
 
                     table[position.x][position.y] = self.step
-
-                    if not self.step_to_the_king(king[0],king[1],table,enemy_team):
+                    if not self.step_to_the_king(king[0] if el!=king else position.x,
+                                                   king[1] if el!=king else position.y,
+                                                   table,enemy_team):
                         if tmp:
                             enemy_team.append(tmp)
                         return False
                     if tmp:
                         enemy_team.append(tmp)
+                        table[position.x][position.y] = enemy_color
+                    else:
+                        table[position.x][position.y] = Color.NONE
+
                     tmp = None
-                    table[position.x][position.y] = Color.NONE
+
                 table[el[0]][el[1]] = self.step
         else:
             return False
         return True
 
 if __name__ == "__main__":
+    """
     gm = Chess()
     while True:
         command = input("command:").split()
@@ -197,3 +203,13 @@ if __name__ == "__main__":
                 print("fuck u")
         elif command[0] == "finish":
             print(gm.finish())
+    """
+    gm = Chess()
+    gm.next_step(6,4,4,4)
+    gm.next_step(1,4,3,4)
+    gm.next_step(7,3,3,7)
+    gm.next_step(0,1,2,2)
+    gm.next_step(7,5,4,2)
+    gm.next_step(0,6,2,5)
+    gm.next_step(3,7,1,5)
+    print(gm.finish())
