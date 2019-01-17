@@ -7,6 +7,20 @@ import copy
 
 class Chess:
     __slots__ = ["table", "black_team", "white_team", "size", "step", "figures"]
+    chars = {
+        "king_black": '♚',
+        "queen_black": '♛',
+        "rook_black": '♜',
+        "bishop_black": '♝',
+        "knight_black": '♞',
+        "pawn_black": '♟',
+        "king_white": '♔',
+        "queen_white": '♕',
+        "rook_white": '♖',
+        "bishop_white": '♗',
+        "knight_white": '♘',
+        "pawn_white": '♙',
+    }
 
     def __init__(self):
 
@@ -56,28 +70,28 @@ class Chess:
         if self.step == self.get_color(start_x, start_y) \
                 and any([dot.x == finish_x and dot.y == finish_y for dot in el_type.get_movements(start_x, start_y)]):
             el[0], el[1] = finish_x, finish_y
+            if type(el_type) == Fg_pawn and (finish_x==0 or finish_x == self.size-1):
+                el[2] = "queen"
             self.table[finish_x][finish_y] = self.table[start_x][start_y]
             self.table[start_x][start_y] = Color.NONE
-            self.step = not self.step
+            self.step = int(not self.step)
             return True
         #attack
         if self.step == self.get_color(start_x, start_y) \
             and any([dot.x == finish_x and dot.y == finish_y for dot in el_type.get_attack(start_x, start_y)]):
-            for index in range(len(self.black_team)):
-                enemy = self.black_team[index]
+            team = self.white_team if self.step == Color.BLACK else self.black_team
+            for index in range(len(team)):
+                enemy = team[index]
                 if enemy[0] == finish_x and enemy[1] == finish_y:
-                    del self.black_team[index]
+                    del team[index]
                     break
 
-            for index in range(len(self.white_team)):
-                enemy = self.white_team[index]
-                if enemy[0] == finish_x and enemy[1] == finish_y:
-                    del self.white_team[index]
-                    break
             el[0], el[1] = finish_x,finish_y
+            if type(el_type) == Fg_pawn and (finish_x==0 or finish_x == self.size-1):
+                el[2] = "queen"
             self.table[finish_x][finish_y] = self.table[start_x][start_y]
             self.table[start_x][start_y] = Color.NONE
-            self.step = not self.step
+            self.step = int(not self.step)
             return True
 
         return False
@@ -105,26 +119,12 @@ class Chess:
 
     def get_state(self):
         state = [[' '] * self.size for i in range(self.size)]
-        chars = {
-            "king_black": '♚',
-            "queen_black": '♛',
-            "rook_black": '♜',
-            "bishop_black": '♝',
-            "knight_black": '♞',
-            "pawn_black": '♟',
-            "king_white": '♔',
-            "queen_white": '♕',
-            "rook_white": '♖',
-            "bishop_white": '♗',
-            "knight_white": '♘',
-            "pawn_white": '♙',
 
-        }
         for el in self.black_team:
-            state[el[0]][el[1]] = chars[el[2] + "_black"]
+            state[el[0]][el[1]] = self.chars[el[2] + "_black"]
 
         for el in self.white_team:
-            state[el[0]][el[1]] = chars[el[2] + "_white"]
+            state[el[0]][el[1]] =self. chars[el[2] + "_white"]
 
         return state
 

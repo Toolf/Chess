@@ -1,6 +1,5 @@
 import pygame
 from Chess import Chess
-import pprint
 
 pygame.init()
 
@@ -55,6 +54,8 @@ chess_render(gameAPI.get_state(),gameDisplay)
 
 focus_element = []# real position, next position
 move = False
+
+
 while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -69,13 +70,19 @@ while 1:
             gameAPI.next_step(*focus_element,*next_step)
             focus_element = None
             move = False
+
+            team = gameAPI.black_team if not gameAPI.step else gameAPI.white_team
+            king = [el for el in team if el[2] == "king"][0]
+
             if gameAPI.finish():
                 print("FINISH GAME")
-            pprint.pprint(gameAPI.table)
-
+            elif gameAPI.step_to_the_king(king[0],king[1]):
+                print("step to the king")
 
     background(gameDisplay)
     chess_render(gameAPI.get_state(),gameDisplay,focus_element)
+
+
     pygame.display.update()
 
 
